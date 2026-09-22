@@ -1,0 +1,253 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Two complete themes, one token vocabulary. Components never reference a raw
+  colour — they reference a role (surface, muted, negative), so light and dark
+  stay in sync by construction instead of by discipline.
+
+  Values are space-separated RGB channels because Tailwind composes them with
+  `/ <alpha-value>` to keep opacity modifiers working.
+*/
+@layer base {
+  :root,
+  [data-theme='light'] {
+    --c-canvas: 248 250 252;
+    --c-surface: 255 255 255;
+    --c-raised: 248 250 252;
+    --c-overlay: 255 255 255;
+    --c-hairline: 226 232 240;
+
+    --c-text-strong: 15 23 42;
+    --c-text-body: 51 65 85;
+    --c-text-muted: 100 116 139;
+    --c-text-faint: 148 163 184;
+
+    --c-brand: 13 148 106;
+    --c-brand-soft: 209 250 235;
+    --c-brand-strong: 8 111 79;
+    --c-brand-contrast: 255 255 255;
+
+    --c-positive: 13 148 106;
+    --c-negative: 220 38 61;
+    --c-warning: 194 120 3;
+    --c-info: 37 99 235;
+    --c-violet: 109 71 220;
+
+    --c-shadow: 15 23 42;
+    --grid-line: 15 23 42;
+    --grid-alpha: 0.045;
+    color-scheme: light;
+  }
+
+  [data-theme='dark'] {
+    --c-canvas: 8 11 20;
+    --c-surface: 15 20 33;
+    --c-raised: 22 29 45;
+    --c-overlay: 20 26 41;
+    --c-hairline: 39 49 71;
+
+    --c-text-strong: 248 250 252;
+    --c-text-body: 203 213 225;
+    --c-text-muted: 148 163 184;
+    --c-text-faint: 100 116 139;
+
+    /* Brand lifts in dark so it clears contrast on a near-black canvas. */
+    --c-brand: 45 212 160;
+    --c-brand-soft: 12 46 39;
+    --c-brand-strong: 110 242 196;
+    --c-brand-contrast: 6 12 10;
+
+    --c-positive: 45 212 160;
+    --c-negative: 251 113 133;
+    --c-warning: 251 191 36;
+    --c-info: 96 165 250;
+    --c-violet: 167 139 250;
+
+    --c-shadow: 0 0 0;
+    --grid-line: 148 163 184;
+    --grid-alpha: 0.07;
+    color-scheme: dark;
+  }
+
+  * {
+    border-color: rgb(var(--c-hairline));
+  }
+
+  html {
+    @apply scroll-smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-canvas text-body font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    /* Theme changes shouldn't strobe. */
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* Numbers in tables must never dance as they update. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  ::selection {
+    @apply bg-brand/25 text-strong;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-brand));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full;
+    background: rgb(var(--c-text-faint) / 0.35);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--c-text-faint) / 0.6);
+    background-clip: content-box;
+  }
+
+  /* Respect the OS setting rather than animating over someone's vestibular disorder. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-hairline bg-surface shadow-sm;
+  }
+  .card-hover {
+    @apply transition-all duration-200 ease-spring hover:-translate-y-0.5 hover:shadow-md;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-xl
+      text-sm font-semibold transition-all duration-150 ease-spring
+      disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98];
+  }
+  .btn-primary {
+    @apply btn bg-brand text-brand-contrast px-4 py-2.5 hover:bg-brand-strong hover:shadow-glow;
+  }
+  .btn-secondary {
+    @apply btn border border-hairline bg-surface px-4 py-2.5 text-body
+      hover:border-brand/45 hover:bg-brand/[0.06] hover:text-brand;
+  }
+  .btn-ghost {
+    @apply btn px-3 py-2 text-muted hover:bg-raised hover:text-strong;
+  }
+  .btn-danger {
+    @apply btn border border-negative/30 bg-negative/[0.08] px-4 py-2.5 text-negative
+      hover:bg-negative/15;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-hairline bg-surface px-3.5 py-2.5 text-sm text-strong
+      outline-none transition-all duration-150 placeholder:text-faint
+      focus:border-brand/60 focus:ring-4 focus:ring-brand/10;
+  }
+  .select {
+    @apply input cursor-pointer appearance-none bg-no-repeat pr-9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.7rem center;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-2xs font-semibold;
+  }
+
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-[0.08em] text-muted;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded-xl bg-raised;
+  }
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 -translate-x-full animate-shimmer;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(var(--c-text-faint) / 0.12),
+      transparent
+    );
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      100deg,
+      rgb(var(--c-brand)),
+      rgb(var(--c-info)) 55%,
+      rgb(var(--c-violet))
+    );
+  }
+
+  /* Scroll containers that fade their overflow read as "there's more". */
+  .fade-edges {
+    mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image:
+      linear-gradient(rgb(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px);
+    background-size: 46px 46px;
+  }
+  .bg-dots {
+    background-image: radial-gradient(rgb(var(--grid-line) / var(--grid-alpha)) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .glass {
+    @apply border border-hairline bg-surface/80 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* Recharts overrides — the defaults fight the theme. */
+.recharts-tooltip-cursor {
+  fill: rgb(var(--c-text-faint) / 0.08);
+}
+.recharts-cartesian-axis-line,
+.recharts-cartesian-axis-tick-line {
+  stroke: transparent;
+}
+.recharts-surface:focus {
+  outline: none;
+}

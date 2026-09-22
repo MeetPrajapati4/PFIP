@@ -1,0 +1,25 @@
+# Only frontend/ and backend/ are tracked in this repo.
+implementation/
+outputs/
+presentation-source-cover-fix/
+*.pdf
+
+# Node
+node_modules/
+dist/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3

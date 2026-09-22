@@ -1,0 +1,3 @@
+# Optional local-ML extras. The platform runs without these (numpy fallbacks
+# are used), but installing them enables the torch-based anomaly detector.
+torch>=2.3.0

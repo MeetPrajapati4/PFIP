@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 185" width="100%" height="185" fill="none">
+  <defs>
+    <linearGradient id="brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14d495" />
+      <stop offset="50%" stop-color="#2dd4bf" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14d495" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.05" />
+    </linearGradient>
+    <filter id="badge-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#14d495" flood-opacity="0.28" />
+    </filter>
+    <style>
+      .title-text {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 46px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        fill: #0f172a;
+      }
+      .sub-text {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 14.5px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        fill: #475569;
+      }
+      @media (prefers-color-scheme: dark) {
+        .title-text { fill: #f8fafc; }
+        .sub-text { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <!-- Centered Icon (X = 260 to 340, Center = 300) -->
+  <g transform="translate(260, 10)">
+    <rect x="0" y="0" width="80" height="80" rx="22" fill="url(#glow-grad)" />
+    <rect x="0" y="0" width="80" height="80" rx="22" fill="#0b1120" stroke="url(#brand-grad)" stroke-width="2.5" filter="url(#badge-glow)" />
+    
+    <!-- Trendline Path -->
+    <path d="M18 52 L30 39 L40 46 L53 26 L63 33" 
+          fill="none" 
+          stroke="url(#brand-grad)" 
+          stroke-width="5.5" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+    
+    <!-- Coordinate Nodes -->
+    <circle cx="18" cy="52" r="3.5" fill="#14d495" />
+    <circle cx="40" cy="46" r="3" fill="#2dd4bf" />
+    <circle cx="63" cy="33" r="5.5" fill="#14d495" filter="url(#badge-glow)" />
+    <circle cx="63" cy="33" r="2.5" fill="#ffffff" />
+  </g>
+
+  <!-- Centered Brand Title (X = 300) -->
+  <text x="300" y="134" text-anchor="middle" class="title-text">
+    PFIP<tspan fill="#14d495">.</tspan>
+  </text>
+
+  <!-- Centered Tagline (X = 300) -->
+  <text x="300" y="164" text-anchor="middle" class="sub-text">
+    Personal Finance Intelligence Platform
+  </text>
+</svg>
